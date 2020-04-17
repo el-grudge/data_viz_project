@@ -30,6 +30,12 @@ source('R/points_and_features.R', print.eval=TRUE)
 source('R/goal_line.R', print.eval=TRUE)
 # Separate Models + Combined Models
 source('R/goalsVSxg.R', print.eval=TRUE)
+# Goal difference (pyramid)
+
+# Goals for minus xG (bar chart)
+
+# Complete passes - deep (stacked proportion)
+
 
 #########################
 #### 3- Benchmarks ######

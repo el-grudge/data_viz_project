@@ -10,8 +10,9 @@ platonictable %>%
   theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank()) +
-  labs(title = 'Average points needed for each rank',
+  labs(title = 'Average points tally per rank',
        x = 'Points')
+
 
 # win/lose/draw piechart
 platonictable %>%
