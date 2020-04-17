@@ -1,0 +1,18 @@
+# loading libraries
+
+#install.packages('remotes')
+#remotes::install_github('ewenme/understatr')
+library(understatr)
+library(tidyverse)
+library(fmsb)
+library(corrplot)
+library(moments)
+library(reshape2)
+library(effectsize)
+library(gganimate)
+library(gifski)
+library(transformr)
+library(scales)
+library(ggrepel)
+library(ggcorrplot)
+library(RcppRoll)
