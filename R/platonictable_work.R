@@ -13,8 +13,10 @@ platonictable %>%
   labs(title='Directness, activeness, workrate',
        x='Active Possession',
        y='Directness') +
-  geom_segment(aes(x=1.9, xend=4.0, y=4.0, yend=4.0), size=1,
+  geom_segment(aes(x=1.9, xend=4.0, y=6.5, yend=6.5), size=1,
                arrow = arrow(length = unit(0.6,"cm")))  +
-  geom_segment(aes(x=1.9, xend=1.9, y=4.0, yend=6.5), size=1,
+  geom_segment(aes(x=1.9, xend=1.9, y=6.5, yend=4.0), size=1,
                arrow = arrow(length = unit(0.6,"cm"))) +
-  guides(alpha=FALSE)
+  guides(alpha=FALSE) +
+  scale_x_continuous(position = 'top')
+
