@@ -1,6 +1,5 @@
 # 1- build the dataset
-#league_stats_2019 <- get_league_teams_stats(league_name = "EPL", year = 2019)
-xgVSg4 <- league_stats_all  #rbind(league_stats_all, league_stats_2019)
+xgVSg4 <- league_stats_all
 data <- NULL
 for (i in unique(xgVSg4$team_name)){
   data <- rbind(data, filter(xgVSg4, team_name==i)%>% select(team_name, date, xG, scored) %>% as.data.frame())
@@ -18,11 +17,9 @@ for (i in unique(data$team_name)){
 }
 
 # 2- build the model
-# separate models
 lin_model_xg <- lm(scored~xgb4, data=data)
 lin_model_g4 <- lm(scored~gb4, data=data)
 
-# fitted vs residual plots
 model_xg <- as.data.frame(cbind(lin_model_xg$fitted.values, lin_model_xg$residuals))
 colnames(model_xg) <- c('fitted.values', 'residuals')
 
@@ -33,6 +30,7 @@ r.sqr <- c(model_xg_sum$r.squared, model_g4_sum$r.squared)
 r.sqr <- as.data.frame(r.sqr)
 r.sqr$models <- c('xG', 'goals')
 
+# separate models
 ggplot(r.sqr, aes(x=models, y=r.sqr)) +
   geom_bar(stat='identity', fill=c('steelblue', 'red')) +
   theme_minimal() +

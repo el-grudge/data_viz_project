@@ -15,12 +15,12 @@ get_season <- function(season){
                                       xGA=sum(xGA),
                                       deep=sum(deep),
                                       deep_allowed=sum(deep_allowed),
-                                      avgCP=mean(ppda_allowed.att),
-                                      avgCP_allowed=mean(ppda.att),
-                                      def_actions=mean(ppda.def),
-                                      def_actions_allowed=mean(ppda_allowed.def),
-                                      ppda=mean(ppda.att)/mean(ppda.def),
-                                      ppda_allowed=mean(ppda_allowed.att)/mean(ppda_allowed.def)) %>%
+                                      avgCP=sum(ppda_allowed.att),
+                                      avgCP_allowed=sum(ppda.att),
+                                      def_actions=sum(ppda.def),
+                                      def_actions_allowed=sum(ppda_allowed.def),
+                                      ppda=sum(ppda.att)/sum(ppda.def),
+                                      ppda_allowed=sum(ppda_allowed.att)/sum(ppda_allowed.def)) %>%
                             arrange(desc(pts)))
   season$rank <- as.integer(rownames(season))
   season <- select(season, rank, everything())

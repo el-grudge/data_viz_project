@@ -716,3 +716,264 @@ as.data.frame(platonictable %>%
 theme(axis.title.x=element_blank(),
       axis.text.x=element_blank(),
       axis.ticks.x=element_blank())
+
+
+platonictable %>%
+  select(rank, goals_for, goals_against) %>%
+  mutate(goals_against=goals_against*-1) %>%
+  gather(key=event, value=number, goals_for, goals_against) %>%
+  ggplot(aes(x=number, y=rank, fill=event)) + 
+  geom_col() +
+  scale_fill_manual(values=c("red", "steelblue")) +
+  scale_y_reverse(breaks=seq(1,20,1)) +
+  scale_x_continuous(breaks=seq(-100,100,10)) +
+  theme_minimal() +
+  labs(title='Goals for/agains') +
+  theme(axis.title.y=element_blank(),
+        axis.title.x=element_blank(),
+        legend.position='none')
+
+
+platonictable %>%
+  select(rank, goals_for, xG) %>%
+  ggplot(aes(rank, goals_for)) +
+  geom_col(position='identity', fill='steelblue') + 
+  geom_point(aes(x=rank, y=xG), color='red', size=3) +
+  geom_line(aes(x=rank, y=xG), color='red', size=1) +
+  theme_minimal() +
+  scale_x_continuous(breaks=seq(1,20,1)) +
+  scale_y_continuous(breaks=seq(1,100,10)) +
+  theme(axis.title.y=element_blank(),
+        axis.title.x=element_blank())
+
+platonictable %>%
+  select(rank, goals_against, xGA) %>%
+  ggplot(aes(rank, goals_against)) +
+  geom_col(position='identity', fill='red') + 
+  geom_point(aes(x=rank, y=xGA), color='steelblue', size=3) +
+  geom_line(aes(x=rank, y=xGA), color='steelblue', size=1) +
+  theme_minimal() +
+  scale_x_continuous(breaks=seq(1,20,1)) +
+  scale_y_continuous(breaks=seq(1,100,10)) +
+  theme(axis.title.y=element_blank(),
+        axis.title.x=element_blank())
+
+
+platonictable %>%
+  select(rank, goals_for, goals_against, xG, xGA) %>% 
+  gather(key=goals, value=number, goals_for, goals_against) %>%
+  gather(key=expected, value=x_number, xG, xGA) %>%
+  filter((goals=='goals_for' & expected=='xG') | (goals=='goals_against' & expected=='xGA')) %>%
+  mutate(phase=c(rep('Attack', 20), rep('Defense', 20))) %>%
+  ggplot(aes(x=rank, y=number, fill=goals)) +
+  geom_bar(stat='identity') +
+  geom_point(aes(x=rank, y=x_number, col=expected)) +
+  geom_line(aes(x=rank, y=x_number, col=expected)) +
+  scale_fill_manual(name='', values=c('red', 'steelblue')) +
+  scale_color_manual(name='', values=c('red', 'steelblue')) +
+  facet_wrap(~phase) +
+  theme_minimal() +
+  theme(axis.title.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank()) +
+  scale_y_continuous(breaks=seq(0,100,10)) +
+  labs(title = "Goals and expected goals")
+
+platonictable %>%
+  select(rank, goals_for, goals_against, xG, xGA) %>% 
+  gather(key=goals, value=number, goals_for, goals_against) %>%
+  gather(key=expected, value=x_number, xG, xGA) %>%
+  filter((goals=='goals_for' & expected=='xG') | (goals=='goals_against' & expected=='xGA')) %>%
+  mutate(phase=c(rep('offense', 20), rep('defense', 20)),
+         )
+
+factor(x$phase, levels=c('A','B'))
+
+x <- factor(c(rep('offense', 20), rep('defense', 20))) %>% revalue(c('A','B'))
+x
+
+factor(c("alpha","beta","gamma","alpha","beta")) %>% revalue(c("beta"="two", "gamma"="three"))
+
+factor(x$phase, levels=sort(phase))
+
+p1 <- ggplot(mtcars, aes(x = mpg, y = wt)) + geom_point()
+
+# You can assign different labellers to variables:
+p1 + facet_grid(
+  vs + am ~ gear,
+  labeller = labeller(vs = label_both, am = label_value)
+)
+
+
+
+ggplot(df, aes(y=id)) +
+  geom_point(aes(x=year, color=value1), size=4) +
+  geom_point(aes(x=value3, colour ='value3'), size=3) +
+  geom_point(aes(x=value2, colour ='value2'), size=5) +
+  scale_colour_manual(name="",  
+                      values = c("1"="yellow", "2"="orange", "3"="red",
+                                 "value3"="grey", "value2"="black"))
+
+platonictable %>%
+  select(rank, goals_for, goals_against, xG, xGA) %>%
+  ggplot(aes(x=rank, y=goals_for)) +
+  geom_bar(aes(fill=goals_against), stat='identity') +
+  geom_bar(aes(y=goals_against), stat='identity', fill='red', alpha=0.5) +
+  theme_minimal()
+
+# platonictable %>%
+#   select(rank, goals_for, goals_against, xG, xGA) %>% 
+#   gather(key=goals, value=number, -rank, -xG, -xGA) %>% 
+#   spread(rank, number) %>%
+#   gather(key=)
+#   
+#   gather(key=expected, value=x.numbers, -rank, -goals, -number) %>%
+#   spread(rank)
+# 
+#   separate(goals, c('expected, x_number'), sep='^x+')
+#   
+#   spread(goals, number)
+#   #gather(key=expected, value=x_number, xG, xGA, -goals, -number)
+# 
+# 
+# df <- data.frame(
+#   id = 1:10,
+#   time = as.Date('2009-01-01') + 0:9,
+#   Q3.2.1. = rnorm(10, 0, 1),
+#   Q3.2.2. = rnorm(10, 0, 1),
+#   Q3.2.3. = rnorm(10, 0, 1),
+#   Q3.3.1. = rnorm(10, 0, 1),
+#   Q3.3.2. = rnorm(10, 0, 1),
+#   Q3.3.3. = rnorm(10, 0, 1)
+# )
+# 
+# df %>%
+#   gather(key, value, -id, -time) %>%
+#   extract(key, c("question", "loop_number"), "(Q.\\..)\\.(.)")
+# 
+# 
+#   
+#   
+#   
+#   group_by(rank) %>%
+#   #summarise(expected=goals[goals=='xG'], number=number[goals=='xG'])
+#   summarise(expected=rbind(goals[goals=='xG'],goals[goals=='xGA']))
+#   
+#   
+#   #extract(goals, c('expected', 'xnumbers'), "(xG)(xGA)")
+#   
+# x <-platonictable %>%
+#     select(rank, goals_for, goals_against, xG, xGA) %>% 
+#     gather(key=goals, value=number, -rank)
+# 
+# x[x$goals=='xG' | x$goals=='xGA',]
+
+
+platonictable %>%
+  select(rank, deep, avgCP) %>%
+  gather(key, value, -rank) %>%
+  ggplot(aes(x=rank, y=value, fill=key)) +
+  geom_bar(stat='identity', position='fill')
+
+platonictable %>%
+  select(rank, avgCP) %>%
+  gather(key, value, -rank) %>%
+  ggplot(aes(x=rank, y=value, fill=key)) +
+  #geom_bar(stat='identity', position='fill', width=0.4) + 
+  geom_col(position='stack')
+
+platonictable %>%
+  select(rank, deep) %>%
+  gather(key, value, -rank) %>%
+  ggplot(aes(x=rank, y=value, fill=key)) +
+  #geom_bar(stat='identity', position='fill', width=0.4) + 
+  geom_col(position='stack')
+
+platonictable %>%
+  select(rank, xG, deep, avgCP, ppda) %>%
+  mutate(active_possesion=deep/avgCP*100,
+         direct_play=deep/xG,
+         ppda=ppda/10) %>%
+  ggplot(aes(active_possesion, direct_play)) +
+  geom_point() +
+  geom_text(aes(active_possesion, direct_play, label=rank))
+
+platonictable %>%
+  select(rank, xG, deep, avgCP, ppda) %>%
+  mutate(active=deep/avgCP*100,
+         direct=deep/xG) %>%
+  ggplot() +
+  geom_circle(aes(x0 = active, y0 = direct, r = ppda/150, fill=ppda, alpha=0), show.legend=TRUE) +
+  scale_fill_gradient2(low='steelblue', mid='white', high='red', midpoint=mean(platonictable$ppda)) +
+  geom_text(aes(active, direct, label=rank)) +
+  theme_minimal() +
+  theme(legend.position='right',
+        axis.text=element_blank(),
+        axis.title=element_text(size=16)) +
+  labs(title='Directness, activeness, workrate',
+       x='Active Possession',
+       y='Directness') +
+  geom_segment(aes(x=1.9, xend=4.0, y=4.0, yend=4.0), size=1,
+               arrow = arrow(length = unit(0.6,"cm")))  +
+  geom_segment(aes(x=1.9, xend=1.9, y=4.0, yend=6.5), size=1,
+               arrow = arrow(length = unit(0.6,"cm"))) +
+  guides(alpha=FALSE)
+  
+
+
+breaks=c(9.0, 10.5, 12.0),
+labels=c(9.0, 10.5, 12.0),
+limits=c(0,10)
+
+
+
+midpoint <- range(x$ppda)[2]-((range(x$ppda)[2]-range(x$ppda)[1])/2)
+
+x <- platonictable %>%
+  select(rank, xG, deep, avgCP, ppda) %>%
+  mutate(active=deep/avgCP*100,
+         direct=deep/xG,
+         ppda=ppda/150)
+
+
+
+work %>% 
+ggplot() +
+  geom_circle(aes(x0 = active, y0 = direct, r = ppda, fill = ppda))
+
+ggplot() +
+  geom_cirlce(aes(x0=active, y0=direct, r=ppda, fill=ppda), data=work)
+
+# Behold the some circles
+ggplot() +
+  geom_circle(aes(x0 = x0, y0 = y0, r = r, fill = r), data = circles)
+
+
+platonictable %>%
+  select(rank, xG, deep) %>%
+  mutate(directness=deep/xG) %>%
+  ggplot(aes(rank, directness)) +
+  geom_bar(stat='identity')
+
+platonictable %>%
+  select(rank, ppda) %>%
+  ggplot(aes(rank,ppda)) +
+  geom_bar(stat='identity')
+
+platonictable %>% head()
+
+library(ggforce)
+# circles are drawn centered at x and y
+
+data(mpg)
+ggplot(mpg, aes(displ, hwy)) + geom_circle(radius=0.1) + geom_point()
+ggplot(mpg, aes(displ, hwy)) + geom_circle(linetype=2, radius=0.05, alpha=0.5)
+ggplot(mpg, aes(displ, hwy)) + geom_circle(aes(linetype=factor(cyl)), radius=0.05, alpha=0.5)
+
+circles <- data.frame(
+  x0 = rep(1:3, 3),
+  y0 = rep(1:3, each = 3),
+  r = seq(0.1, 1, length.out = 9)
+)
+
+circles
