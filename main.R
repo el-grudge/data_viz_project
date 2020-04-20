@@ -56,9 +56,10 @@ source('R/platonictable_work.R', print.eval=TRUE)
 # 4.1 Pedigree
 source('R/alltime_geoviz.R', print.eval=TRUE)
 
-# 3.2 All-time ranking
-source('R/alltime_geo_viz.R', print.eval=TRUE)
+# 4.2 All-time ranking
 alltime <- build_alltimetable(season_all)
+source('R/tracking_ranking.R', print.eval=TRUE)
 
-# 3.3 Orientation
+# 4.3 Challenge 1: Win the league
+source('R/radarcharts.R', print.eval=TRUE)
 

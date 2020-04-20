@@ -1,4 +1,4 @@
-league_stats <- as.data.frame(league_stats_2014)
+league_stats <- as.data.frame(league_stats_all)
 animate_full <- NULL
 for (i in unique(league_stats$team_name)){
   tmp <- filter(league_stats, team_name==i)
@@ -19,11 +19,11 @@ for (i in unique(league_stats$team_name)){
   animate_full <- rbind(animate_full, tmp)
 }
 
-iteration_sequence <- c(1:38)
+iteration_sequence <- c(1:460)
 
 my_anim <- ggplot(animate_full,
        aes(matchday,
-           goals_for,
+           points,
            color = team_name,
            group = team_name)) +
   geom_line() +

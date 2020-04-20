@@ -1,4 +1,4 @@
-GB <- getData('GADM', country="gbr", level=2)
+GB <- raster::getData('GADM', country="gbr", level=2)
 GB_sub <- subset(GB, NAME_1 != "Northern Ireland")
 GB_sub2 <- subset(GB_sub, NAME_1 != "Wales")
 GB_sub3 <- subset(GB_sub2, NAME_1 != "Scotland")
