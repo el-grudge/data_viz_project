@@ -23,6 +23,7 @@ season_all <- rbind(season_14, season_15, season_16, season_17, season_18)
 # 2.2 Points and other important features
 # 2.2.1 Scatter plots
 source('R/points_and_features_scatter.R', print.eval=TRUE)
+
 # 2.2.2 Correlation matrix
 source('R/points_and_features_corrplot.R', print.eval=TRUE)
 
@@ -31,6 +32,7 @@ source('R/points_and_features_corrplot.R', print.eval=TRUE)
 source('R/goal_line.R', print.eval=TRUE)
 # Separate Models + Combined Models
 source('R/goalsVSxg.R', print.eval=TRUE)
+
 
 #########################
 #### 3- Champions, challengers, and also-rans ######
@@ -49,15 +51,14 @@ source('R/platonictable_gxg.R', print.eval=TRUE)
 # Attitude and work
 source('R/platonictable_work.R', print.eval=TRUE)
 
-
+#########################
+#### 4. Champions, challengers, and also-rans
+# 4.1 Pedigree
+source('R/alltime_geoviz.R', print.eval=TRUE)
 
 # 3.2 All-time ranking
+source('R/alltime_geo_viz.R', print.eval=TRUE)
 alltime <- build_alltimetable(season_all)
 
 # 3.3 Orientation
-
-
-
-
-
 

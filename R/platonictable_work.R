@@ -1,22 +1,25 @@
 # Attitude and work
 platonictable %>%
-  select(rank, xG, deep, avgCP, ppda) %>%
-  mutate(active=deep/avgCP*100,
-         direct=deep/xG) %>%
+  select(rank, xG, deep, CP, ppda) %>%
+  mutate(active=deep/CP*100,
+         ppda=-ppda) %>%
   ggplot() +
-  geom_circle(aes(x0 = active, y0 = direct, r = ppda/150, fill=ppda, alpha=0), show.legend=TRUE) +
-  scale_fill_gradient2(low='steelblue', mid='white', high='red', midpoint=mean(platonictable$ppda)) +
-  geom_text(aes(active, direct, label=rank)) +
+  geom_circle(aes(x0 = active, y0 = ppda/4, r = xG/1000, fill=xG, alpha=1), show.legend=TRUE) +
+  scale_fill_gradient2(low='red', mid='white', high='steelblue', midpoint=mean(platonictable$xG)) +
+  geom_text(aes(active, ppda/4, label=rank), size=3) +
   theme_minimal() +
-  theme(legend.position='right',
-        axis.title=element_text(size=16)) +
   labs(title='Directness, activeness, workrate',
        x='Active Possession',
-       y='Directness') +
-  geom_segment(aes(x=1.9, xend=4.0, y=6.5, yend=6.5), size=1,
-               arrow = arrow(length = unit(0.6,"cm")))  +
-  geom_segment(aes(x=1.9, xend=1.9, y=6.5, yend=4.0), size=1,
-               arrow = arrow(length = unit(0.6,"cm"))) +
+       y='Passes per Defensive Action') +
+  theme(legend.position='right',
+        axis.title=element_text(size=16),
+        plot.title=element_text(vjust=2.1, size=15),
+        axis.text=element_blank(),
+        axis.title.x=element_text(size=10),
+        axis.title.y=element_text(size=10)) +
   guides(alpha=FALSE) +
-  scale_x_continuous(position = 'top')
-
+  scale_x_continuous(position = 'top') +
+  geom_segment(aes(x=2.0, xend=4.0, y=-1.75, yend=-1.75), size=1,
+               arrow = arrow(length = unit(0.6,"cm")))  +
+  geom_segment(aes(x=2.0, xend=2.0, y=-1.75, yend=-3.5), size=1,
+               arrow = arrow(length = unit(0.6,"cm")))

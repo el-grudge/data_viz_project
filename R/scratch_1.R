@@ -977,3 +977,25 @@ circles <- data.frame(
 )
 
 circles
+
+
+
+########################################################################
+
+install.packages(c("rgeos", "gpclib", "maptools", "sp"))
+
+library(rgeos)
+library(maptools)
+library(gpclib)
+library(rgdal)
+library(sf)
+
+# MAP
+# np_dist <- readShapeSpatial("data/NHS_England_Regions/NHS_England_Regions.shp")
+# np_dist <- st_read("data/NHS_England_Regions/NHS_England_Regions.shp")
+np_dist <- readShapeSpatial('/home/minasonbol/R/Projects/GENERAL/FOOTBALL/data/gadm36_GBR_shp/gadm36_GBR_1.shp')
+# VERIFY IT LOADED PROPERLY
+plot(np_dist)
+
+
+library(GGcorr)
