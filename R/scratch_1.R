@@ -999,3 +999,153 @@ plot(np_dist)
 
 
 library(GGcorr)
+########################################################################
+###### add league_name, season, matchday to match_ids###################
+head(match_ids)
+
+
+d <- 5
+for(i in 1:10) { 
+  nam <- paste("A", i, sep = "")
+  assign(nam, rnorm(3)+d)
+}
+
+
+match_stats <- get_match_stats(match_id = 81)
+match_shots <- get_match_shots(match_id = 81)
+View(match_stats)
+View(match_shots)
+
+class(unique(get_match_shots(match_id = 11662)[,'date']))
+
+date_x <- data.frame(get_match_shots(match_id = 11662)[1,'date'])
+year(x)
+
+class(x$date)
+class(as.Date(x$date))
+
+match_ids[match_ids$match_id == 11662,]$date <- as.Date(x$date)
+match_ids[match_ids$match_id == 11662,]$date
+
+
+class(match_ids$date) <- "Date"
+
+table(match_ids$league_name)
+
+lapply(
+  X = v_dist,
+  FUN = function(distance_method) dist(
+    x = scale_M,
+    method = distance_method
+  )
+)
+
+match_ids$date > as.Date('2019-12-31')
+
+match_ids$season <- lapply(
+  X = match_ids$date,
+  FUN = function(matchdate){
+    if((matchdate > as.Date('2014-07-31')) & (matchdate < as.Date('2015-06-01'))){
+      return ('2014/15')
+    } else if ((matchdate > as.Date('2015-07-31')) & (matchdate < as.Date('2016-06-01'))) {
+      return ('2015/16')
+    } else if ((matchdate > as.Date('2016-07-31')) & (matchdate < as.Date('2017-06-01'))) {
+      return ('2016/17')
+    } else if ((matchdate > as.Date('2017-07-31')) & (matchdate < as.Date('2018-06-01'))) {
+      return ('2017/18')
+    } else if ((matchdate > as.Date('2018-07-31')) & (matchdate < as.Date('2019-06-01'))) {
+      return ('2018/19')
+    } else if ((matchdate > as.Date('2019-07-31')) & (matchdate < as.Date('2020-06-01'))) {
+      return ('2019/20')
+    }
+  }
+)
+
+match_ids$date
+
+View(match_ids)
+View(is.na(match_ids$season))
+
+cat(sprintf("\"%f\" \"%f\"\n", df$r, df$interest))
+cat(sprintf("\"%f\"", matchdate, '2014/15'))
+
+
+if((match_ids$date > as.Date('2014-07-31')) & (match_ids$date < as.Date('2015-06-01'))){
+  '2014/15'
+} else if ((match_ids$date > as.Date('2015-07-31')) & (match_ids$date < as.Date('2016-06-01'))) {
+  '2015/16'
+} else if ((match_ids$date > as.Date('2016-07-31')) & (match_ids$date < as.Date('2017-06-01'))) {
+  '2016/17'
+} else if ((match_ids$date > as.Date('2017-07-31')) & (match_ids$date < as.Date('2018-06-01'))) {
+  '2017/18'
+} else if ((match_ids$date > as.Date('2018-07-31')) & (match_ids$date < as.Date('2019-06-01'))) {
+  '2018/19'
+} else if ((match_ids$date > as.Date('2019-07-31')) & (match_ids$date < as.Date('2020-06-01'))) {
+  '2019/20'
+}
+
+
+vapply(
+  X = match_ids$date,
+  FUN = function(matchdate){
+    if((matchdate > as.Date('2014-07-31')) & (matchdate < as.Date('2015-06-01'))){
+      return ('2014/15')
+    } else if ((matchdate > as.Date('2015-07-31')) & (matchdate < as.Date('2016-06-01'))) {
+      return ('2015/16')
+    } else if ((matchdate > as.Date('2016-07-31')) & (matchdate < as.Date('2017-06-01'))) {
+      return ('2016/17')
+    } else if ((matchdate > as.Date('2017-07-31')) & (matchdate < as.Date('2018-06-01'))) {
+      return ('2017/18')
+    } else if ((matchdate > as.Date('2018-07-31')) & (matchdate < as.Date('2019-06-01'))) {
+      return ('2018/19')
+    } else if ((matchdate > as.Date('2019-07-31')) & (matchdate < as.Date('2020-06-01'))) {
+      return ('2019/20')
+    } else {
+      return ('NA')
+    }
+  },
+  FUN.VALUE = character(1)
+)
+
+length('2019/20')
+
+match_ids$date[2266]
+match_ids[2266,]
+
+
+match_ids <- match_ids[order(match_ids$date),]
+
+nrow(match_ids[(match_ids$h_team=='AC Milan' | match_ids$a_team=='AC Milan') & match_ids$season=='2014/15',])
+
+X = match_ids$h_team
+FUN = function(team){
+  seq(1:38)
+}
+
+seq(1:38)
+
+View(match_ids)
+View(match_ids[order(match_ids$league_name),])
+
+bayern_season <- match_ids[(match_ids$h_team == 'Bayern Munich' | match_ids$a_team == 'Bayern Munich') & match_ids$season %in% c('2014/15', '2015/16'),]
+
+bayern_1415$week <- seq(1:nrow(bayern_1415))
+
+bayern_season$week <- 0
+
+for (i in unique(bayern_season$season)){
+  bayern_season[bayern_season$season==i,]$week <- seq(1:nrow(bayern_season[bayern_season$season==i,]))
+}
+
+match_ids$week <- 0
+for (i in unique(match_ids$h_team)){
+  team <- match_ids[(match_ids$h_team==i | match_ids$a_team==i),]
+  for (j in unique(team$season)){
+    match_ids[(match_ids$h_team==i | match_ids$a_team==i) & match_ids$season==j,]$week <- 
+      seq(1:nrow(match_ids[(match_ids$h_team==i | match_ids$a_team==i) & match_ids$season==j,]))
+    print(i)
+    print(j)
+    print(match_ids[(match_ids$h_team==i | match_ids$a_team==i) & match_ids$season==j,])
+  }
+}
+

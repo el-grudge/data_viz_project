@@ -10,7 +10,7 @@ league_stats_2016 <- get_league_teams_stats(league_name = "EPL", year = 2016)
 league_stats_2017 <- get_league_teams_stats(league_name = "EPL", year = 2017)
 league_stats_2018 <- get_league_teams_stats(league_name = "EPL", year = 2018)
 league_stats_all <- rbind(league_stats_2014, league_stats_2015, league_stats_2016, league_stats_2017, league_stats_2018)
-
+  
 season_14 <- get_season(league_stats_2014)
 season_15 <- get_season(league_stats_2015)
 season_16 <- get_season(league_stats_2016)
