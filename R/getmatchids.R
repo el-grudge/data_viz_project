@@ -18,7 +18,7 @@ write.csv(match_ids, file='match_ids.csv')
 # read match_ids from saved file
 match_ids <- read.csv('data/match_ids.csv', stringsAsFactors = FALSE)
 
-# add league_name, season, matchday to match_ids
+# add league_name & season to match_ids
 # A- Add league name
 # 1- loop over leageus_meta
 # 2- get all get_league_teams_stats
@@ -70,83 +70,3 @@ match_ids$season <- vapply(
   },
   FUN.VALUE = character(1)
 )
-
-# C- Add matchday
-
-match_ids <- match_ids[order(match_ids$date),]
-match_ids <- match_ids[order(match_ids$league_name),]
-match_ids$week <- 0
-for (i in unique(match_ids$h_team)){
-  team <- match_ids[(match_ids$h_team==i | match_ids$a_team==i),]
-  for (j in unique(team$season)){
-    match_ids[(match_ids$h_team==i | match_ids$a_team==i) & match_ids$season==j,]$week <- 
-      seq(1:nrow(match_ids[(match_ids$h_team==i | match_ids$a_team==i) & match_ids$season==j,]))
-  }
-}
-
-# Finding missing values
-# show total match count per league
-table(match_ids$league_name)
-# data is missing from all leagues, except the russian league
-
-# show data per league per season
-sapply(
-  X = unique(match_ids$league_name),
-  FUN = function(league){
-    print(table(match_ids[match_ids$league_name==league,]$season))
-  }
-)
-# EPL 2018/19 missing 1 game
-# Serie A 2018/19 missing 2 games
-# Bundesliga 2015/16 missing 1 game
-# La liga 2015/16 missing 1 game
-# La liga 2018/19 missing 2 games
-# Ligue 1 2016/17 missing 2 games
-# Ligue 1 2017/18 missing 11 games
-
-table(match_ids[match_ids$league_name=='EPL' & match_ids$season=='2018/19',]$h_team)
-table(match_ids[match_ids$league_name=='EPL' & match_ids$season=='2018/19',]$a_team)
-# chelsea / southampton
-
-table(match_ids[match_ids$league_name=='Serie A' & match_ids$season=='2018/19',]$h_team)
-table(match_ids[match_ids$league_name=='Serie A' & match_ids$season=='2018/19',]$a_team)
-# frosinone, fiorentina, / genoa, napoli
-
-table(match_ids[match_ids$league_name=='Bundesliga' & match_ids$season=='2015/16',]$h_team)
-table(match_ids[match_ids$league_name=='Bundesliga' & match_ids$season=='2015/16',]$a_team)
-# hannover / hoffenheim
-
-table(match_ids[match_ids$league_name=='La liga' & match_ids$season=='2015/16',]$h_team)
-table(match_ids[match_ids$league_name=='La liga' & match_ids$season=='2015/16',]$a_team)
-# real betis / eibar
-table(match_ids[match_ids$league_name=='La liga' & match_ids$season=='2018/19',]$h_team)
-table(match_ids[match_ids$league_name=='La liga' & match_ids$season=='2018/19',]$a_team)
-# getafe, girona / celta vigo, espanyol
-
-table(match_ids[match_ids$league_name=='Ligue 1' & match_ids$season=='2016/17',]$h_team)
-table(match_ids[match_ids$league_name=='Ligue 1' & match_ids$season=='2016/17',]$a_team)
-# sc bastia, paris st germain / bordeaux, lyon
-table(match_ids[match_ids$league_name=='Ligue 1' & match_ids$season=='2017/18',]$h_team)
-table(match_ids[match_ids$league_name=='Ligue 1' & match_ids$season=='2017/18',]$a_team)
-# bordeaux, dijon, guingamp, lyon, marseille, metz, monaco, montpellier, nice, saint-etienne / 
-# amiens, angers, bordeaux, caen, dijon, lille, lyon, monaco, nantes, nice, toulouse
-
-match_ids[match_ids$league_name=='Serie A' & 
-            match_ids$season=='2018/19' & 
-            match_ids$h_team=='Frosinone' &
-            match_ids$a_team=='Napoli',]
-
-head(match_ids)
-missing_matches <- data.frame()
-missing_match_id <- get_match_ids(8844)
-missing_match_id$league_name <- 'Ligue 1'
-missing_match_id$date <- as.Date('2018-03-03')
-missing_match_id$season <- '2017/18'
-missing_match_id$week <- 0
-missing_matches <- rbind(missing_matches, missing_match_id)
-missing_matches
-match_ids <- rbind(match_ids, missing_matches)
-View(match_ids)
-
-table(match_ids[match_ids$league_name=='EPL' & match_ids$season=='2018/19',]$week)
-View(match_ids[match_ids$league_name=='EPL' & match_ids$season=='2018/19',])
