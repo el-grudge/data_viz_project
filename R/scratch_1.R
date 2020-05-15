@@ -657,7 +657,7 @@ ggcorrplot(season_all.cor,
            colors=c("steelblue", "white", "red"),
            lab_size = 2,
            hc.order = TRUE,
-           #hc.method = "average", 
+           #hc.method = "average",  
            outline.color='black',
            insig='pch',
            pch.col='red',
@@ -1148,4 +1148,160 @@ for (i in unique(match_ids$h_team)){
     print(match_ids[(match_ids$h_team==i | match_ids$a_team==i) & match_ids$season==j,])
   }
 }
+#########################################################################################################
+################################# Digging into matches ##################################################
+rownames(match_ids) <- seq(1:nrow(match_ids))
+head(match_ids)
+match_shots <- get_match_shots(match_id = match_ids[1,]$match_id)
+View(match_shots)
+match_stats <- get_match_stats(match_id = match_ids[1,]$match_id)
+View(match_stats)
 
+get_team_players_stats(team_name = "Newcastle United", year = 2018)
+View(team_players_stats)
+
+lubridate::year(match_ids$date)
+substring(match_ids$season,1,4)
+
+bundesliga_2019 <- get_league_teams_stats(league_name = "Bundesliga", year = 2019)
+season_19 <- get_season(bundesliga_2019)
+source('R/points_and_features_scatter.R', print.eval=TRUE)
+
+season_19 %>%
+select(-rank, -team_name, -team_id, -mp, -year) %>%
+  melt(id = "pts") %>%
+  ggplot(aes(x=pts, y=value)) +
+  geom_point(col='steelblue') +
+  geom_smooth(col='red', alpha=0.2, size=0.7) +
+  facet_wrap(~variable, scales = "free") +
+  theme_minimal() +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  labs(title = "Relationship between points and other factors",
+       x ='Points')
+
+season_scatter(season_19)
+
+#tmp[is.na(tmp$goals_for_avg),]
+
+colnames(is.na(tmp))
+summary(tmp)
+class(tmp)
+
+colz <- colnames(tmp)[colSums(is.na(tmp)) > 0]
+colz[1]
+tmp[,colz[1]]
+is.na(tmp[,colz[1]])
+
+
+#tmp$goals_for_avg[1] <- roll_mean(tmp$goals_for, 1, align='right', fill=NA)[1]
+tmp[1,colz[1]]
+
+mean()
+
+tmp$goals_for
+
+tmp[1:2,'goals_for']
+colnames(tmp)
+
+tmp[1:2,colz[1]]
+
+# inputs:
+#   null colnames - null_cols[]
+#   data colnames - col_func[1]
+#   function - col_func[2]
+#   nrows
+
+tmp[1,colz[1]] <- mean(as.numeric(tmp[1:1,'goals_for']))
+
+length(colnames(tmp)[colSums(is.na(tmp)) > 0])
+
+head(tmp)
+null_cols <- colnames(tmp)[colSums(is.na(tmp)) > 0]
+for (i in c(1:length(null_cols))){
+  col_func <- scan(what="", text=null_cols[i], sep=".")
+  print(col_func)
+  # print(null_cols[i])
+  #for (j in c(1:colSums(is.na(tmp[,null_cols[i]])))){
+  # for (j in c(1:colSums(is.na(tmp[,null_cols[1]])))){
+  #   print(tmp[j,null_cols[i]])
+  # }
+  for (j in 1:sum(is.na(tmp[,null_cols[i]]))){
+    #print(j)
+    #print(tmp[j,null_cols[i]])
+    #tmp[j,null_cols[i]]
+    print(tmp[1:j,col_func[1]])
+    print(get(col_func[2])(tmp[1:j,col_func[1]]))
+  }
+}
+
+as.numeric()
+
+tmp[1:2,col_func[1]]
+
+tmp[1:1,col_func[1]]
+
+col_func[1]
+
+#for (j in ){}
+
+for (j in 1:colSums(is.na(tmp[,null_cols[i]]))){
+  print(tmp[j,null_cols[i]])
+}
+  
+tmp[rownumofemptycol, coname]
+
+col_func <- scan(what="", text=null_cols[1], sep=".")[2]
+colSums(is.na(tmp[,null_cols[i]]))
+null_cols
+#goals_for_avg
+#goals_for_min
+#goals_for_max
+#xG_mean
+#xG_min
+#xG_max
+
+head(tmp)
+
+strsplit(null_cols[1], "[.]")
+
+x <- scan(what="", text=null_cols[1], sep=".")[2]
+
+get(x)(1:3)
+mean(1:3)
+
+
+df_a <- tmp %>% select(matchdate, starts_with('xG'), -xG) %>% mutate(measure='xG')
+df_b <- tmp %>% select(matchdate, starts_with('goals'), -goals_for) %>% mutate(measure='goals_for')
+colnames(df_a) <- c('matchdate', 'mean', 'min', 'max', 'measure')
+colnames(df_b) <- c('matchdate', 'mean', 'min', 'max', 'measure')
+tmp_2 <- rbind(df_a, df_b)
+
+head(tmp)
+tmp %>% select(matchdate, starts_with('xG'), -xG) %>% mutate(measure='xG') %>% head()
+
+View(pivot_longer(tmp,
+             c(goals_for.mean, xG.mean),
+             names_to='measure',
+             values_to='averages') %>%
+  pivot_longer(c(goals_for.min, xG.min),
+               names_to='measure_min',
+               values_to='min') %>%
+  pivot_longer(c(goals_for.max, xG.max),
+               names_to='measure_max',
+               values_to='max') %>%
+  filter((measure=='goals_for.mean' & measure_min=='goals_for.min' & measure_max=='goals_for.max') | 
+           (measure=='xG.mean' & measure_min=='xG.min' & measure_max=='xG.max')) %>%
+    select(matchdate, averages, min, max, measure) %>%
+    mutate(measure=ifelse(measure=='goals_for.mean', 'goals_for', 'xG')))
+
+mutate(popular=ifelse(popular=='approve_estimate', 'approve', 'disapprove'))
+
+# pivot_longer(approval_topline, 
+#              c(approve_estimate, disapprove_estimate), 
+#              names_to='popular', 
+#              values_to='estimate') %>%
+#   pivot_longer(c(approve_hi, disapprove_hi), names_to='popular_hi', values_to='hi') %>%
+
+View(tmp_2)

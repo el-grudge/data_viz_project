@@ -23,16 +23,20 @@ season_all <- rbind(season_14, season_15, season_16, season_17, season_18)
 # 2.2 Points and other important features
 # 2.2.1 Scatter plots
 source('R/points_and_features_scatter.R', print.eval=TRUE)
+season_scatter(season_all)
 
 # 2.2.2 Correlation matrix
 source('R/points_and_features_corrplot.R', print.eval=TRUE)
+season_corrplot(season_all)
 
 # 2.2.3 The case for xG
 # Goal lines
 source('R/goal_line.R', print.eval=TRUE)
+goal_line(league_stats_all)
+
 # Separate Models + Combined Models
 source('R/goalsVSxg.R', print.eval=TRUE)
-
+goalsVSxg(league_stats_all)
 
 #########################
 #### 3- Champions, challengers, and also-rans ######
@@ -42,14 +46,23 @@ platonictable <- build_platonictable(season_all)
 
 # Ranking lollipop
 source('R/platonictable_lollipop.R', print.eval=TRUE)
+lollipoprank(platonictable)
+
 # Win/lose/draw piechart
 source('R/platonictable_piechart.R', print.eval=TRUE)
+winlosedraw(platonictable)
+
 # Goal difference
 source('R/platonictable_pyramid.R', print.eval=TRUE)
+pyramid(platonictable)
+
 # Goals for minus xG
 source('R/platonictable_gxg.R', print.eval=TRUE)
+gxg(platonictable)
+
 # Attitude and work
 source('R/platonictable_work.R', print.eval=TRUE)
+workrate(platonictable)
 
 #########################
 #### 4. Champions, challengers, and also-rans
