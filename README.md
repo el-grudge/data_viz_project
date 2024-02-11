@@ -346,7 +346,7 @@ each other.
 
 The following visual looks at the progress of all teams throughout the 5 year period of our study:
 
-
+![race to the top](./images/alltime.gif)
 
 This is a good way to look at identify major events, like a takeover or a managerial change.
 
